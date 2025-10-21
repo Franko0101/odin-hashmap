@@ -59,24 +59,40 @@ class LinkedList {
 
     at(index) {
         if (index >= this.size()) {
-            console.log("La lista è più corta dell'indice")
+            console.log("La lista è più corta dell'indice");
             return null;
             //return; Dovrebbe esserci un throw, per adesso stampa undefined
-        } else {
+        }
+
+        let tempNode = this.head;
+        for(let i = 0; i < index; i++) {
+            tempNode = tempNode.nextNode;
+        }
+        return tempNode;
+    }
+
+    removeAt(index) {
+        if (index >= this.length) {
+            console.log("La lista è più corta dell'indice");
+            return null;
+        }
+        if(index == 0)
+            this.head = this.head.nextNode;
+        else {
             let tempNode = this.head;
-            for(let i = 0; i < index; i++) {
+            for(let i = 0; i < index-1; i++) {
                 tempNode = tempNode.nextNode;
             }
-            return tempNode;
+            tempNode.nextNode = tempNode.nextNode.nextNode;
         }
+
     }
 
     pop() {
         if (!this.head) {
             console.log("Lista vuota");
         } else if (!this.head.nextNode) {
-            this.head.key = null;
-            this.head.value = null;
+            this.head = null;
         } else {
             let tempNode = this.head;
             while(tempNode.nextNode.nextNode) {
@@ -107,7 +123,7 @@ class LinkedList {
     }
 
     find(key) {
-        if (!this.head.value) {
+        if (!this.head) {
             return null;
         } else if(!this.head.nextNode) {
             if (this.head.key == key)
@@ -131,23 +147,14 @@ class LinkedList {
         } else if(!this.head.nextNode) {
             console.log(`${this.head.key}, ${this.head.value}`)
         } else {
+            let string = ``;
             let tempNode = this.head;
             while(tempNode) {
-            console.log(`( ${tempNode.key}, ${tempNode.value} ) -> `)
-            tempNode = tempNode.nextNode;
-        }
-        console.log(`null`);
+                string += `( ${tempNode.key}, ${tempNode.value} ) -> `
+                tempNode = tempNode.nextNode;
+            }
+            string += `null`;
+            console.log(string);
         }
     }
 }
-
-const list = new LinkedList();
-
-list.append("fido", "dog");
-list.append("puny", "cat");
-list.prepend("boh", "mouse");
-
-list.toString();
-//console.log(list.find("ciao"));
-
-//console.log(list.contains("rabbit"));
