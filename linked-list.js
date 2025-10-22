@@ -43,7 +43,7 @@ class LinkedList {
 
     size() { return this.length }
 
-    head() { return this.head }
+    getHead() { return this.head }
 
     tail() {
         if (!this.head) {

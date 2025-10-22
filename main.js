@@ -88,6 +88,36 @@ class HashMap {
             }
         })
     }
+
+    keys() {
+        let filtered = this.buckets.filter((item) => item.head);
+        let allKeys = filtered.map((item) => {
+            let array = [];
+            let tempNode = item.getHead();
+            while(tempNode) {
+                array.push(tempNode.key);
+                tempNode = tempNode.nextNode;
+            }
+            return array;
+        })
+
+        return allKeys;
+    }
+
+    values() {
+        let filtered = this.buckets.filter((item) => item.head);
+        let allValues = filtered.map((item) => {
+            let array = [];
+            let tempNode = item.getHead();
+            while(tempNode) {
+                array.push(tempNode.value);
+                tempNode = tempNode.nextNode;
+            }
+            return array;
+        })
+
+        return allValues;
+    }
 }
 
 const map = new HashMap();
@@ -96,10 +126,13 @@ map.set("Cat", "Poony");
 map.set("Tac", "Ynoop");
 map.set("Dog", "Pupo");
 console.log(map.buckets);
-console.log(`Numero di chiavi nella mappa: ${map.length()}`)
-map.set("Tac", "Meow");
-map.remove("Cat");
-console.log(`Numero di chiavi nella mappa: ${map.length()}`)
-console.log(map.buckets);
-map.clear();
-console.log(map.buckets);
+console.log(map.keys());
+console.log(map.values());
+// console.log(map.buckets);
+// console.log(`Numero di chiavi nella mappa: ${map.length()}`)
+// map.set("Tac", "Meow");
+// map.remove("Cat");
+// console.log(`Numero di chiavi nella mappa: ${map.length()}`)
+// console.log(map.buckets);
+// map.clear();
+// console.log(map.buckets);
