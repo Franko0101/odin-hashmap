@@ -25,6 +25,26 @@ class HashMap {
         return hashCode;
     }
 
+    checkGrowth() {
+        return  this.length() > (this.capacity * this.loadFactor);
+    }
+
+    grow() {
+        this.capacity = this.capacity * 2;
+        const moreBuckets = bucketsInit(this.capacity);
+        const filtered = this.buckets.filter((item) => item.head);
+        filtered.forEach((item) => {
+            let tempNode = item.head;
+            while(tempNode) {
+                const hash = this.hash(tempNode.key);
+                moreBuckets[hash].append(tempNode.key, tempNode.value);
+                tempNode = tempNode.nextNode;
+            }
+        })
+
+        this.buckets = moreBuckets;
+    }
+
     set(key, value) {
         const hash = this.hash(key);
 
@@ -34,6 +54,9 @@ class HashMap {
             console.log("Valore aggiornato");
         } else {
             this.buckets[hash].append(key, value);
+
+            if(this.checkGrowth())
+                this.grow();
         }
     }
 
@@ -131,21 +154,3 @@ class HashMap {
         return allEntries;
     }
 }
-
-const map = new HashMap();
-
-map.set("Cat", "Poony");
-map.set("Tac", "Ynoop");
-map.set("Dog", "Pupo");
-console.log(map.buckets);
-console.log(map.keys());
-console.log(map.values());
-console.log(map.entries());
-// console.log(map.buckets);
-// console.log(`Numero di chiavi nella mappa: ${map.length()}`)
-// map.set("Tac", "Meow");
-// map.remove("Cat");
-// console.log(`Numero di chiavi nella mappa: ${map.length()}`)
-// console.log(map.buckets);
-// map.clear();
-// console.log(map.buckets);
