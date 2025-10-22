@@ -90,33 +90,45 @@ class HashMap {
     }
 
     keys() {
-        let filtered = this.buckets.filter((item) => item.head);
-        let allKeys = filtered.map((item) => {
-            let array = [];
+        const filtered = this.buckets.filter((item) => item.head);
+        const allKeys = [];
+        filtered.forEach((item) => {
             let tempNode = item.getHead();
             while(tempNode) {
-                array.push(tempNode.key);
+                allKeys.push(tempNode.key);
                 tempNode = tempNode.nextNode;
             }
-            return array;
         })
 
         return allKeys;
     }
 
     values() {
-        let filtered = this.buckets.filter((item) => item.head);
-        let allValues = filtered.map((item) => {
-            let array = [];
+        const filtered = this.buckets.filter((item) => item.head);
+        const allValues = [];
+        filtered.forEach((item) => {
             let tempNode = item.getHead();
             while(tempNode) {
-                array.push(tempNode.value);
+                allValues.push(tempNode.value);
                 tempNode = tempNode.nextNode;
             }
-            return array;
         })
 
         return allValues;
+    }
+
+    entries() {
+        const filtered = this.buckets.filter((item) => item.head);
+        const allEntries = [];
+        filtered.forEach((item) => {
+            let tempNode = item.getHead();
+            while(tempNode) {
+                allEntries.push([tempNode.key, tempNode.value]);
+                tempNode = tempNode.nextNode;
+            }
+        })
+
+        return allEntries;
     }
 }
 
@@ -128,6 +140,7 @@ map.set("Dog", "Pupo");
 console.log(map.buckets);
 console.log(map.keys());
 console.log(map.values());
+console.log(map.entries());
 // console.log(map.buckets);
 // console.log(`Numero di chiavi nella mappa: ${map.length()}`)
 // map.set("Tac", "Meow");
