@@ -1,4 +1,4 @@
-import { LinkedList, Node } from "./linked-list";
+import { LinkedList, Node } from "./linked-list.js";
 
 function bucketsInit(size) {
     let buckets = [];
@@ -12,21 +12,21 @@ function bucketsInit(size) {
 class HashMap {
     loadFactor = 0.75;
     capacity = 16;
-    buckets = bucketsInit(capacity);
+    buckets = bucketsInit(this.capacity);
 
     hash(key) {
         let hashCode = 0;
 
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
-            hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
+            hashCode = (primeNumber * hashCode + key.charCodeAt(i));
+            hashCode = hashCode % this.capacity;
         }
-
         return hashCode;
     }
 
     set(key, value) {
-        const hash = hash(key);
+        const hash = this.hash(key);
 
         if (this.has(key)) {
             const index = this.buckets[hash].find(key);
@@ -52,13 +52,54 @@ class HashMap {
     }
 
     has(key) {
-        const hash = hash(key);
+        const hash = this.hash(key);
         
-        if (hash < 0 || hash >= buckets.length) {
+        if (hash < 0 || hash >= this.buckets.length) {
             throw new Error("Trying to access index out of bounds");
         }
 
         return this.buckets[hash].contains(key);
     }
+
+    remove(key) {
+        const hash = this.hash(key);
+
+        if (this.has(key)) {
+            let index = this.buckets[hash].find(key);
+            this.buckets[hash].removeAt(index);
+            return true;
+        }
+        
+        return false;
+    }
+
+    length() {
+        let mapLength = this.buckets.reduce((total, currentItem) => {
+            return total + currentItem.size();
+        }, 0);
+
+        return mapLength;
+    }
+
+    clear() {
+        this.buckets.forEach((item) => {
+            while(item.size() != 0) {
+                item.pop();
+            }
+        })
+    }
 }
 
+const map = new HashMap();
+
+map.set("Cat", "Poony");
+map.set("Tac", "Ynoop");
+map.set("Dog", "Pupo");
+console.log(map.buckets);
+console.log(`Numero di chiavi nella mappa: ${map.length()}`)
+map.set("Tac", "Meow");
+map.remove("Cat");
+console.log(`Numero di chiavi nella mappa: ${map.length()}`)
+console.log(map.buckets);
+map.clear();
+console.log(map.buckets);

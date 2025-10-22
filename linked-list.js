@@ -74,16 +74,17 @@ class LinkedList {
     removeAt(index) {
         if (index >= this.length) {
             console.log("La lista è più corta dell'indice");
-            return null;
-        }
-        if(index == 0)
+        } else if(index == 0) {
             this.head = this.head.nextNode;
+            this.length--;
+        }
         else {
             let tempNode = this.head;
             for(let i = 0; i < index-1; i++) {
                 tempNode = tempNode.nextNode;
             }
             tempNode.nextNode = tempNode.nextNode.nextNode;
+            this.length--;
         }
 
     }
@@ -93,17 +94,19 @@ class LinkedList {
             console.log("Lista vuota");
         } else if (!this.head.nextNode) {
             this.head = null;
+            this.length--;
         } else {
             let tempNode = this.head;
             while(tempNode.nextNode.nextNode) {
                 tempNode = tempNode.nextNode;
             }
             tempNode.nextNode = null;
+            this.length--;
         }
     }
 
     contains(key) {
-        if (!this.head.key) {
+        if (!this.head) {
             return false;
         } else if(!this.head.nextNode) {
             if (this.head.key == key)
@@ -142,7 +145,7 @@ class LinkedList {
     }
 
     toString() {
-        if(!this.head.value) {
+        if(!this.head) {
             console.log("Lista vuota");
         } else if(!this.head.nextNode) {
             console.log(`${this.head.key}, ${this.head.value}`)
